@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package service;
+
+import "proto/adapter.proto";
+//import "adapter.proto";
+
+option go_package = "github.com/scjtqs2/bot_adapter/pb/service";
+
+// onebot-11 api实现
+service AdapterService {
+    // onebot-11 标准的api
+    rpc SendPrivateMsg(entity.SendPrivateMsgReq) returns (entity.SendMsgRsp); // 发送私聊消息
+    rpc SendGroupMsg(entity.SendGroupMsgReq) returns (entity.SendMsgRsp); // 发送群消息
+    rpc SendMsg(entity.SendMsgReq) returns (entity.SendMsgRsp); // 发送消息
+    rpc DeleteMsg(entity.DeleteMsgReq) returns (entity.DeleteMsgRsp); // 撤回消息
+    rpc GetMsg(entity.GetMsgReq) returns (entity.GetMsgRsp); // 获取消息
+    rpc GetForwardMsg(entity.GetForwardMsgReq) returns (entity.GetForwardMsgRsp); // 获取合并转发消息
+    rpc SendLike(entity.SendLikeReq) returns (entity.SendLikeRsp); // 发送好友赞
+    rpc SetGroupKick(entity.SetGroupKickReq) returns (entity.SetGroupKickRsp); // 群组踢人
+    rpc SetGroupBan(entity.SetGroupBanReq) returns (entity.SetGroupBanRsp); // 群组单人禁言
+    rpc SetGroupAnonymousBan(entity.SetGroupAnonymousBanReq) returns (entity.SetGroupAnonymousBanRsp); // 群组匿名用户禁言
+    rpc SetGroupWholeBan(entity.SetGroupWholeBanReq) returns (entity.SetGroupWholeBanRsp); // 群组全员禁言
+    rpc SetGroupAdmin(entity.SetGroupAdminReq) returns (entity.SetGroupAdminRsp); // 群组设置管理员
+    rpc SetGroupAnonymous(entity.SetGroupAnonymousReq) returns (entity.SetGroupAnonymousRsp); // 群组匿名
+    rpc SetGroupCard(entity.SetGroupCardReq) returns (entity.SetGroupCardRsp); // 设置群名片(群备注)
+    rpc SetGroupName(entity.SetGroupNameReq) returns (entity.SetGroupNameRsp); // 设置群名
+    rpc SetGroupLeave(entity.SetGroupLeaveReq) returns (entity.SetGroupLeaveRsp); // 退出群组
+    rpc SetGroupSpecialTitle(entity.SetGroupSpecialTitleReq) returns (entity.SetGroupSpecialTitleRsp); // 设置群组专属头衔
+    rpc SetGroupAddRequest(entity.SetGroupAddRequestReq) returns (entity.SetGroupAddRequestRsp); // 处理加群请求/邀请
+    rpc SetFriendAddRequest(entity.SetFriendAddRequestReq) returns (entity.SetFriendaddRequestRsp); // 处理加好友请求
+    rpc GetLoginInfo(entity.GetLoginInfoReq) returns (entity.GetLoginInfoRsp); // 获取登录号信息
+    rpc GetStrangerInfo(entity.GetStrangerInfoReq) returns (entity.GetStrangerInfoRsp); // 获取陌生人信息
+    rpc GetFriendList(entity.GetFriendListReq) returns (entity.GetFriendListRsp); // 获取好友列表
+    rpc GetGroupInfo(entity.GetGroupInfoReq) returns (entity.GetGroupInfoRsp); // 获取群信息
+    rpc GetGroupList(entity.GetGroupListReq) returns (entity.GetGroupListRsp); // 获取群列表
+    rpc GetGroupMemberInfo(entity.GetGroupMemberInfoReq) returns (entity.GetGroupMemberInfoRsp); // 获取群成员信息
+    rpc GetGroupMemberList(entity.GetGroupMemberListReq) returns (entity.GetGroupMemberListRsp); // 获取群成员列表
+    rpc GetGroupHonorInfo(entity.GetGroupHonorInfoReq) returns (entity.GetGroupHonorInfoRsp); // 获取群荣誉信息
+    rpc GetCookies(entity.GetCookiesReq) returns (entity.GetCookiesRsp); // 获取Cookies
+    rpc GetCsrfToken(entity.GetCsrfTokenReq) returns (entity.GetCsrfTokenRsp); // 获取CSRF Token
+    rpc GetCredentials(entity.GetCredentialsReq) returns (entity.GetCredentialsRsp); // 获取QQ 相关接口凭证
+    rpc GetRecord(entity.GetRecordReq) returns (entity.GetRecordRsp); // 获取语音
+    rpc GetImage(entity.GetImageReq) returns (entity.GetImageRsp); // 获取图片
+    rpc CanSendImage(entity.CanSendImageReq) returns (entity.CanSendImageRsp); // 检查是否可以发送图片
+    rpc CanSendRecord(entity.CanSendRecordReq) returns (entity.CanSendRecordRsp); // 检查是否可以发送语音
+    rpc GetStatus(entity.GetStatusReq) returns (entity.GetStatusRsp); // 获取运行状态
+    rpc GetVersionInfo(entity.GetVersionInfoReq) returns (entity.GetVersionInfoRsp); // 获取版本信息
+    rpc SetRestart(entity.SetRestartReq) returns (entity.SetRestartRsp); // 重启OneBot 实现
+    rpc CleanCache(entity.CleanCacheReq) returns (entity.CleanCacheRsp); // 清理缓存
+
+    // go-cqhttp 实现的一些非标准api
+    rpc CustomSetGroupPortrait(entity.CustomSetGroupPortraitReq) returns (entity.CustomSetGroupPortraitRsp); // 设置群头像
+    rpc CustomGetWordSlices(entity.CustomGetWordSlicesReq) returns (entity.CustomGetWordSlicesRsp) ; // 获取中文分词（隐藏API)
+    rpc CustomOcrImage(entity.CustomOcrImageReq) returns (entity.CustomOcrImageRsp) ; // 图片OCR
+    rpc CustomGetGroupSystemMsg(entity.CustomGetGroupSystemMsgReq) returns (entity.CustomGetGroupSystemMsgRsp); // 获取群系统消息
+    rpc CustomUploadGroupFile(entity.CustomUploadGroupFileReq) returns (entity.CustomUploadGroupFileRsp); // 上传群文件
+    rpc CustomGetGroupFileSystemInfo(entity.CustomGetGroupFileSystemInfoReq) returns (entity.CustomGetGroupFileSystemInfoRsp); // 获取群文件系统信息
+    rpc CustomGetGroupRootFiles(entity.CustomGetGroupRootFilesReq) returns (entity.CustomGetGroupRootFilesRsp); // 获取群根目录文件列表
+    rpc CustomGetGroupFilesByFolder(entity.CustomGetGroupFilesByFolderReq) returns (entity.CustomGetGroupFilesByFolderRsp); // 获取群子目录文件列表
+    rpc CustomGetGroupFileUrl(entity.CustomGetGroupFileUrlReq) returns (entity.CustomGetGroupFileUrlRsp); // 获取群文件资源链接
+    rpc CustomGetStatus(entity.CustomGetStatusReq) returns (entity.CustomGetStatusRsp); // 获取状态
+    rpc CustomGetGroupAtAllRemain(entity.CustomGetGroupAtAllRemainReq) returns (entity.CustomGetGroupAtAllRemainRsp); // 获取群 @全体成员 剩余次数
+    rpc CustomGetVipInfo(entity.CustomGetVipInfoReq) returns (entity.CustomGetVipInfoRsp); // 获取VIP信息
+    rpc CustomSendGroupNotice(entity.CustomSendGroupNoticeReq) returns (entity.CustomSendGroupNoticeRsp); // 发送群公告
+    rpc CustomReloadEventFilter(entity.CustomReloadEventFilterReq) returns (entity.CustomReloadEventFilterRsp); // 重载事件过滤器
+    rpc CustomDownloadFile(entity.CustomDownloadFileReq) returns (entity.CustomDownloadFileRsp); // 下载文件到缓存目录
+    rpc CustomGetOnlineClinets(entity.CustomGetOnlineClientsReq) returns (entity.CustomGetOnlineClientsRsp); // 获取当前账号在线客户端列表
+    rpc CustomGetGroupMsgHistory(entity.CustomGetGroupMsgHistoryReq) returns (entity.CustomGetGroupMsgHistoryRsp); // 获取群消息历史记录
+    rpc CustomSetEssenceMsg(entity.CustomSetEssenceMsgReq) returns (entity.CustomSetEssenceMsgRsp); // 设置精华消息
+    rpc CustomDeleteEssenceMsg(entity.CustomDeleteEssenceMsgReq) returns (entity.CustomDeleteEssenceMsgRsp); // 移除精华消息
+    rpc CustomGetEssenceMsgList(entity.CustomGetEssenceMsgListReq) returns (entity.CustomGetEssenceMsgListRsp); // 获取精华消息列表
+    rpc CustomCheckUrlSafely(entity.CustomCheckUrlSafelyReq) returns (entity.CustomCheckUrlSafelyRsp); // 检查链接安全性
+    rpc CustomGetModelShow(entity.CustomGetModelShowReq) returns (entity.CustomGetModelShowRsp); // 获取在线机型
+    rpc CustomSetModelShow(entity.CustomSetModelShowReq) returns (entity.CustomSetModelShowRsp); // 设置在线机型
+    rpc CustomGetMsg(entity.CustomGetMsgReq) returns (entity.CustomGetMsgRsp); // 获取消息
+    rpc CustomGetImage(entity.CustomGetImageReq) returns (entity.CustomGetImageRsp); // 获取图片信息
+    rpc CustomSendGroupForwardMsg(entity.CustomSendGroupForwardMsgReq) returns (entity.CustomSendGroupForwardMsgRsp); // 发送合并转发（群）
+    rpc CustomGetForwardMsg(entity.CustomGetForwardMsgReq) returns (entity.CustomGetForwardMsgRsp); // 获取被顶转发内容
+
+    // 下面是bot_adapter自身的一些功能实现
+    rpc GetAuthToken(entity.GetAuthTokenReq) returns (entity.GetAuthTokenRsp); // 通过appid和appsecret 拉取 token
+    rpc GetConfig(entity.Config) returns (entity.Config); // 拉取配置信息
+    rpc UpdateConfig(entity.Config) returns (entity.Config); // 更新配置信息
+    rpc SetBotAdapterKill(entity.SetRestartReq) returns (entity.SetRestartRsp); // 更新配置后用来重启bot_adapter
+}

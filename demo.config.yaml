@@ -1,0 +1,84 @@
+# bot_adapter 配置文件样例
+
+# 本地grpc 监听设置
+grpc_config:
+  addr: 0.0.0.0:8001                       # grpc服务监听地址
+  max_connection_age_grace: 120            # 单位秒
+  max_connection_idle: 60                  # 单位秒
+  timeout: 60                              # 单位秒
+# cqhttp的 http接入方式的配置
+http_config:
+  local_host: 0.0.0.0:5800                  # 本地监听地址，用于和go-cqhttp的post接收
+  secret: ""                                # go-cqhttp post地址对应的secret参数
+  server_addr: http://go-cqhttp:5700        # go-cqhttp 的http监控地址，用于主动调api
+  token: ""                                 # go-cqhttp 的token参数。
+# 扩展配置 （这里demo 配置了两个app样例，根据实际情况自行增加）
+plugins:
+  # 这是一个数组，第一个扩展app配置
+  - app_id: "10086"                                       # 第一个app的appid。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+    app_secret: "7654321"                                 # 第一个app的appsecret。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+    encrypt_key: "3333333333"                             # 推送事件的加密key。
+    plugin_name: "GO-CQHTTP"                              # 第一个扩展app的名称
+    post_addr: ""                                         # 第一个扩展app接收推送的地址。如果app不需要接收推送，这里留空字符串
+  # 第二个app的配置
+  - app_id: "22222222"                                    # 第二个app的appid。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+    app_secret: "333333333333"                            # 第二个app的appsecret。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+    encrypt_key: "3333333333"                             # 推送事件的加密key。
+    plugin_name: "图灵机器人"                               # 第二个扩展app的名称
+    post_addr: http://127.0.0.1:9541/tuling               # 第二个扩展app接收推送的地址。如果app不需要接收推送，这里留空字符串
+    register_key_words:
+      - msg_type: private                             # 私有消息类型拦截
+        # 需要拦截的关键词前缀
+        prefix_key_words:
+          - '#'
+          - '!'
+          - ！
+          - 点歌
+      - msg_type: group                               # 群消息类型拦截
+        # 需要拦截的关键词前缀
+        prefix_key_words:
+          - '#'
+          - '!'
+          - ！
+          - 点歌
+  # 第三个app的配置
+  - app_id: "48494944"                                    # 第三个app的appid。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+    app_secret: "333333333333"                            # 第三个app的appsecret。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+    encrypt_key: "3333333333"                             # 推送事件的加密key。
+    plugin_name: "远程app"                               # 第三个扩展app的名称
+    post_addr: http://127.0.0.1:8888               # 第三个扩展app接收推送的地址。如果app不需要接收推送，这里留空字符串
+    register_key_words:
+      - msg_type: private                             # 私有消息类型拦截
+        # 需要拦截的关键词前缀
+        prefix_key_words:
+          - '#'
+          - '!'
+          - ！
+          - 点歌
+      - msg_type: group                               # 群消息类型拦截
+        # 需要拦截的关键词前缀
+        prefix_key_words:
+          - '#'
+          - '!'
+          - ！
+          - 点歌
+server_type: http              # cqhttp对接类型。目前仅支持http
+# 权限信息配置
+permissions:
+  - app_id: "10086"                                               #  第一个app的权限配置
+    is_admin: true                                                #  第一个app给分配最高权限
+    is_only_cqhttp: false
+  - app_id: "22222222"                                            #  第二个app的权限配置
+    is_admin: false
+    is_only_cqhttp: true                                          #  给它全部cqhttp公开api的权限 并开启全部推送权限
+  - app_id: "48494944"                                            #  第三个app的权限配置
+    is_admin: false
+    is_only_cqhttp: false
+    api_permissions: #  第三个app的权限独立配置 （仅在 is_admin 和 is_only_cqhttp同时为false时生效）常量配置在 config/permission.go
+      - "send_private_msg"
+      - "send_group_msg"
+      - "delete_msg"
+    push_permissions: # 推送接受的权限独立配置 （仅在 is_admin 和 is_only_cqhttp同时为false时生效）常量配置在 config/permission.go
+      - "message_private"
+      - "notice_notify_poke"
+      - "notice_friend_add"

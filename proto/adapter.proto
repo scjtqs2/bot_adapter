@@ -1,0 +1,760 @@
+syntax = "proto3";
+
+package entity;
+
+option go_package = "github.com/scjtqs2/bot_adapter/pb/entity";
+
+
+// SendMsgRsp 发送消息接口的回包
+message SendMsgRsp {
+  int64 message_id = 1; // 消息 ID
+}
+
+// SendPrivateMsgReq 私聊消息请求
+message SendPrivateMsgReq {
+  int64 user_id = 1; // QQ号
+  bytes message = 2; // 无论是string的格式就是string。array的转成json传过来。
+  bool auto_escape = 3;
+  bool is_array_message = 4; // 是否是array格式的message，否则就是string的
+}
+
+// SendGroupMsgReq 发送群消息请求
+message SendGroupMsgReq {
+  int64  group_id = 1; // 群号
+  bytes message = 2; // 无论是string的格式就是string。array的转成json传过来。
+  bool auto_escape = 3; // 消息内容是否作为纯文本发送（即不解析 CQ 码），只在 message 字段是字符串时有效
+  bool is_array_message = 4; // 是否是array格式的message，否则就是string的
+}
+
+// SendMsgReq 发送消息
+message SendMsgReq {
+  string message_type = 1; // 消息类型，支持 private、group，分别对应私聊、群组，如不传入，则根据传入的 *_id 参数判断
+  int64 user_id = 2; // 对方 QQ 号（消息类型为 private 时需要）
+  int64 group_id = 3; // 群号（消息类型为 group 时需要）
+  bytes message = 4; // 无论是string的格式就是string。array的转成json传过来。
+  bool auto_escape = 5; // 消息内容是否作为纯文本发送（即不解析 CQ 码），只在 message 字段是字符串时有效
+  bool is_array_message = 6; // 是否是array格式的message，否则就是string的
+}
+
+// DeleteMsgReq 撤回消息
+message DeleteMsgReq {
+  int64 message_id = 1; // 消息ID
+}
+
+// DeleteMsgRsp 撤回消息回包
+message DeleteMsgRsp {
+}
+
+// GetMsgReq 获取消息请求
+message GetMsgReq {
+  int32 message_id = 1; // 消息ID
+}
+
+// GetMsgRsp 获取消息回包
+message GetMsgRsp {
+  int32 time = 1; // 发送时间
+  string message_type = 2; // 消息类型 private、group
+  int32 message_id = 3; //  消息ID
+  int32 real_id = 4; // 消息真实ID
+  Sender sender = 5; // 发送人信息
+}
+
+// Sender 发送人信息
+message Sender {
+  int32 age = 1; // 年龄
+  string area = 2; // (群消息) 地区
+  string card = 3; // (群消息) 群名片／备注
+  string level = 4;  // (群消息) 成员等级
+  string nickname = 5; // 昵称
+  string role = 6; // (群消息) 	角色，owner 或 admin 或 member
+  string sex = 7; // 性别，male 或 female 或 unknown
+  string title = 8; // (群消息) 	专属头衔
+  int64 user_id = 9 ; // 发送者 QQ 号
+}
+
+// GetForwardMsg 获取合并转发消息 请求包
+message GetForwardMsgReq {
+  string id = 1; // 合并转发ID
+}
+// GetForwardMsgRsp 获取合并转发消息 回包
+message GetForwardMsgRsp {
+  bytes message = 1;
+}
+// SendLikeReq 发送好友赞
+message SendLikeReq {
+  int64 user_id = 1; // 对方QQ号
+  int64 times = 2 ; // 赞的次数，每个好友每天最多10次
+}
+
+// SendLikeRsp 发送好友赞回包
+message SendLikeRsp {
+
+}
+
+// SetGroupKickReq 群组踢人请求
+message SetGroupKickReq {
+  int64 group_id = 1; // 群号
+  int64 user_id = 2 ; // 要踢的QQ号
+  bool reject_add_request = 3 ; // 拒绝此人的加群请求
+}
+// SetGroupKickRsp 群组踢人 回包
+message SetGroupKickRsp {
+}
+// SetGroupBanReq 群组单人禁言
+message SetGroupBanReq {
+  int64 group_id = 1; // 群号
+  int64 user_id = 2 ; // 要禁言的QQ号
+  int64 duration = 3; // 禁言时长，单位秒，0表示取消禁言
+}
+// SetGroupBanRsp 群组单人禁言回包
+message SetGroupBanRsp {
+
+}
+// SetGroupAnonymousBanReq 群组匿名用户禁言
+message SetGroupAnonymousBanReq {
+  int64 group_id = 1; //群号
+  Anonymous anonymous = 2; // 可选，要禁言的匿名用户对象（群消息上报的 anonymous 字段
+  string anonymous_flag = 3; // 可选，要禁言的匿名用户的 flag（需从群消息上报的数据中获得
+  int64 duration = 4; // 禁言时长，单位秒，无法取消匿名用户禁言
+}
+// Anonymous匿名数据
+message Anonymous {
+  string flag = 1; // 匿名用户 flag，在调用禁言 API 时需要传入
+  int64  id = 2; // 匿名用户 ID
+  string name = 3; // 匿名用户名称
+}
+// SetGroupAnonymousBanRsp 群组匿名用户禁言回包
+message SetGroupAnonymousBanRsp {
+
+}
+// SetGoupWholeBanReq 群组全员禁言
+message SetGroupWholeBanReq {
+  int64 group_id = 1 ; // 群号
+  bool enable = 2; // 是否禁言
+}
+// SetGroupWholeBanRsp 群组全员禁言
+message SetGroupWholeBanRsp {
+
+}
+// SetGroupAdminReq 群组设置管理员 请求
+message SetGroupAdminReq {
+  int64 group_id = 1; // 群号
+  int64 user_id = 2; // 要设置的管理员的QQ号
+  bool enable = 3; // true 为设置，false 为取消
+}
+// SetGroupAdminRsp 群组设置管理员请求 回包
+message SetGroupAdminRsp {}
+// SetGroupAnonymousReq 群组匿名
+message SetGroupAnonymousReq {
+  int64 group_id = 1; // 群号
+  bool enable = 2; // 是否运行匿名聊天
+}
+// SetGroupAnonymousRsp 群组匿名回包
+message SetGroupAnonymousRsp {}
+
+// SetGroupCardReq 设置群名片（群备注） 请求
+message SetGroupCardReq {
+  int64 group_id = 1; // 群号
+  int64 user_id = 2; // 要设置的QQ号
+  string card = 3; // 群名片内容，不填或空字符串表示删除群名片
+}
+// SetGroupCardRsp 设置群名片（群备注） 回包
+message SetGroupCardRsp {
+
+}
+
+// SetGroupNameReq 设置群名 请求
+message SetGroupNameReq {
+  int64 group_id = 1; // 群号
+  string group_name = 2; // 新群名
+}
+// SetGroupNameRsp 设置群名 回包
+message SetGroupNameRsp {
+
+}
+// SetGroupLeaveReq 退出群组 请求
+message SetGroupLeaveReq {
+  int64 group_id = 1; // 群号
+  bool is_dismiss = 2; // 是否解散，如果登录号是群主，则仅在此项为 true 时能够解散
+}
+// SetGroupLeaveRsp 退出群组 回包
+message SetGroupLeaveRsp {
+
+}
+// SetGroupSpecialTitleReq 设置群组专属头衔 请求
+message SetGroupSpecialTitleReq {
+  int64 group_id = 1; // 群号
+  int64 user_id = 2; // 要设置的 QQ 号
+  string special_title = 3; // 专属头衔，不填或空字符串表示删除专属头衔
+  int64 duration = 4; // 专属头衔有效期，单位秒，-1 表示永久，不过此项似乎没有效果，可能是只有某些特殊的时间长度有效，有待测试
+}
+// SetGroupSpecialTitleRsp 设置群组专属头衔 回包
+message SetGroupSpecialTitleRsp {
+
+}
+// SetFriendAddRequestReq 处理加好友请求 请求
+message SetFriendAddRequestReq {
+  string flag = 1; // 加好友请求的 flag（需从上报的数据中获得）
+  bool approve = 2; // 是否同意请求
+  string remark = 3; // 添加后的好友备注（仅在同意时有效）
+}
+// SetFriendaddRequestRsp 处理加好友请求 回包
+message SetFriendaddRequestRsp {
+
+}
+// SetGroupAddRequestReq 处理加群请求/邀请
+message SetGroupAddRequestReq {
+  string flag = 1; // 加群请求的 flag（需从上报的数据中获得）
+  string sub_type = 2; // add 或 invite，请求类型（需要和上报消息中的 sub_type 字段相符
+  bool approve = 3; // 是否同意请求／邀请
+  string reason = 4; // 拒绝理由（仅在拒绝时有效）
+}
+// SetGroupAddRequestRsp 处理加群请求/邀请
+message SetGroupAddRequestRsp {
+
+}
+// GetLoginInfoReq 获取登录号信息
+message GetLoginInfoReq {
+
+}
+// GetLoginInfoRsp 获取登录号信息
+message GetLoginInfoRsp {
+  int64 user_id = 1; // QQ号
+  string nickname = 2; // QQ昵称
+}
+// GetStrangerInfoReq 获取陌生人信息
+message GetStrangerInfoReq {
+  int64 user_id = 1; // QQ号
+  bool no_cache = 2; // 是否不使用缓存（使用缓存可能更新不及时，但响应更快
+}
+// GetStrangerInfoRsp 获取陌生人信息 回包
+message GetStrangerInfoRsp {
+  int64 user_id = 1; // QQ 号
+  string nickname = 2; // 昵称
+  string sex = 3; // 性别，male 或 female 或 unknown
+  sint64 age = 4; // 年龄
+}
+// GetFriendListReq 获取好友列表
+message GetFriendListReq {
+
+}
+// GetFriendListRsp 获取好友列表 回包
+message GetFriendListRsp {
+  repeated Friend list = 1; // 好友列表
+}
+// Friend 好友列表中的好友信息
+message Friend {
+  int64 user_id = 1; // QQ号
+  string nickname = 2; // 昵称
+  string remark = 3; // 备注名
+}
+// GetGroupInfoReq 获取群信息
+message GetGroupInfoReq {
+  int64 group_id = 1; // 群号
+  bool no_cache = 2; // 是否不使用缓存（使用缓存可能更新不及时，但响应更快）
+}
+// GetGroupInfoRsp 获取群信息 回包
+message GetGroupInfoRsp {
+  int64 group_id = 1;
+  string group_name = 2;
+  int64 member_count = 3;
+  int64 max_member_count = 4;
+}
+// GetGroupListReq 获取群列表
+message GetGroupListReq {
+
+}
+// GetGroupListRsp 获取群列表 回包
+message GetGroupListRsp {
+  repeated GetGroupInfoRsp list = 1;
+}
+// GetGroupMemberInfoReq 获取群成员信息
+message GetGroupMemberInfoReq {
+  int64 group_id = 1; // 群号
+  int64 user_id = 2; // QQ号
+  bool no_cache = 3; // 是否不使用缓存（使用缓存可能更新不及时，但响应更快
+}
+// GetGroupMemberInfoRsp 群成员信息 回包
+message GetGroupMemberInfoRsp {
+  int64 group_id = 1; // 群号
+  int64 user_id = 2; // QQ号
+  string nickname = 3; // 昵称
+  string card = 4; // 群名片/备注
+  string sex = 5; // 性别，male 或 female 或 unknown
+  int64 age = 6; // 年龄
+  string area = 7; // 地区
+  int64 join_time = 8; // 加群时间戳
+  int64 last_sent_time = 9; // 最后发言时间戳
+  string level = 10; // 成员等级
+  string role = 11; // 角色，owner 或 admin 或 member
+  bool unfriendly = 12; // 是否不亮记录成员
+  string title = 13; // 专属头衔
+  int64 title_expire_time = 14; // 专属头衔过期时间戳
+  bool card_changeable = 15; // 是否允许修改群名片
+}
+// GetGroupMemberListReq 获取群成员列表 请求
+message GetGroupMemberListReq {
+  int64 group_id = 1; // 群号
+}
+// GetGroupMemberListRsp 获取群成员列表 回包
+message GetGroupMemberListRsp {
+  repeated GetGroupMemberInfoRsp list = 1; // 群成员列表
+}
+// GetGroupHonorInfoReq 获取群荣誉信息 请求
+message GetGroupHonorInfoReq {
+  int64 group_id = 1; // 群号
+  string type = 2; // 要获取的群荣誉类型，可传入 talkative performer legend strong_newbie emotion 以分别获取单个类型的群荣誉数据，或传入 all 获取所有数据
+}
+// GetGroupHonorInfoRsp 获取群荣誉信息 回包
+message GetGroupHonorInfoRsp {
+  int64 group_id = 1; // 群号
+  CurrentTalkative current_talkative = 2; // 当前龙王，仅 type 为 talkative 或 all 时有数据
+  repeated HonorObject talkative_list = 3; // 历史龙王，仅 type 为 talkative 或 all 时有数据
+  repeated HonorObject performer_list = 4; // 群聊之火，仅 type 为 performer 或 all 时有数据
+  repeated HonorObject legend_list = 5; // 群聊炽焰，仅 type 为 legend 或 all 时有数据
+  repeated HonorObject strong_newbie_list = 6; // 冒尖小春笋，仅 type 为 strong_newbie 或 all 时有数据
+  repeated HonorObject emotion_list = 7; // 快乐之源，仅 type 为 emotion 或 all 时有数据
+}
+// CurrentTalkative 龙王
+message CurrentTalkative {
+  int64 user_id = 1; // QQ号
+  string nickname = 2; //昵称
+  string avatar = 3; // 头像URL
+  int64 day_count = 4; //持续天数
+}
+// HonorObject 荣誉内容
+message HonorObject {
+  int64 user_id = 1; // QQ号
+  string nickname = 2; // 昵称
+  string avatar = 3; // 头像URL
+  string descriptio = 4; // 荣誉描述
+}
+// GetCookiesReq 获取Cookies 请求
+message GetCookiesReq {
+  string domain = 1; // 需要获取 cookies 的域名
+}
+// GetCookiesRsp 获取Cookies 回包
+message GetCookiesRsp {
+  string cookies = 1 ; // Cookies
+}
+
+// GetCsrfTokenReq 获取CSRF Token 请求
+message GetCsrfTokenReq {
+
+}
+// GetCsrfTokenRsp 获取CSRF Token 回包
+message GetCsrfTokenRsp {
+  int64 token = 1; //CSRF Token
+}
+// GetCredentialsReq 获取QQ相关接口凭证 get_cookies和get_csrf_token的合并
+message GetCredentialsReq {
+  string domain = 1; //需要获取cookies的域名
+}
+// GetCredentialsReq 获取QQ相关接口凭证 get_cookies和get_csrf_token的合并
+message GetCredentialsRsp {
+  string cookies = 1; // Cookies
+  int64 csrf_token = 2; // CSRF Token
+}
+// GetRecordReq 获取语音 格式转换
+message GetRecordReq {
+  string file = 1; // 收到的语音文件名（消息段的 file 参数），如 0B38145AA44505000B38145AA4450500.silk
+  string out_format = 2; // 要转换到的格式，目前支持 mp3、amr、wma、m4a、spx、ogg、wav、flac
+}
+// GetRecordRsp 获取语音
+message GetRecordRsp {
+  string file = 1; // 转换后的语音文件路径，如 /home/somebody/cqhttp/data/record/0B38145AA44505000B38145AA4450500.mp3
+}
+// GetImageReq 获取图片
+message GetImageReq {
+  string file = 1; // 收到的图片文件名（消息段的 file 参数），如 6B4DE3DFD1BD271E3297859D41C530F5.jpg
+}
+// GetImageRsp 获取图片
+message GetImageRsp {
+  string file = 1; // 下载后的图片文件路径，如 /home/somebody/cqhttp/data/image/6B4DE3DFD1BD271E3297859D41C530F5.jpg
+}
+// CanSendImageReq 检查是否可以发送图片
+message CanSendImageReq {
+
+}
+// CanSendImageRsp 检查是否可以发送图片
+message CanSendImageRsp {
+  bool yes = 1; // 是或否
+}
+// CanSendRecordReq 检查是否可以发送语音
+message CanSendRecordReq {
+
+}
+// CanSendRecordRsp 检查是否可以发送语音
+message CanSendRecordRsp {
+  bool yes = 1; //是或否
+}
+// GetStatusReq 获取运行状态
+message GetStatusReq {
+
+}
+// GetStatusRsp 获取运行状态 回包
+message GetStatusRsp {
+  bool online = 1;
+  bool good = 2;
+}
+// GetVersionInfoReq 获取版本信息
+message GetVersionInfoReq {
+
+}
+// GetVersionInfoRsp 获取版本信息 回包
+message GetVersionInfoRsp {
+  string app_name = 1; // 应用标识，如 mirai-native
+  string app_version = 2; // 应用版本，如 1.2.3
+  string protocol_version = 3; // OneBot 标准版本，如 v11
+}
+// SetRestartReq 重启OneBot实现
+message SetRestartReq {
+  int64 delay = 1; // 	要延迟的毫秒数，如果默认情况下无法重启，可以尝试设置延迟为 2000 左右
+}
+// SetRestartRsp 重启OneBot实现
+message SetRestartRsp {
+
+}
+// CleanCacheReq 清理缓存
+message CleanCacheReq {
+
+}
+// CleanCacheRsp 清理缓存
+message CleanCacheRsp {
+
+}
+
+message GetAuthTokenReq {
+  string app_id = 1;
+  string app_secret = 2;
+}
+
+message GetAuthTokenRsp {
+  string token = 1;
+}
+
+message Config {
+  bytes config = 1;
+}
+
+message CustomSetGroupPortraitReq {
+  int64 group_id = 1; // 群号
+  string file = 2; // 图片文件名，和image的file支持类型一致
+  bool cache = 3; // 表示是否使用已缓存的文件
+}
+
+message CustomSetGroupPortraitRsp {
+
+}
+
+message CustomGetWordSlicesReq {
+  string content = 1;
+}
+
+message CustomGetWordSlicesRsp {
+  repeated string slices = 1;
+}
+
+message CustomOcrImageReq {
+  string image = 1; // 图片ID
+}
+
+// 坐标
+message Coordinate {
+  int64 x = 1; // x坐标
+  int64 y = 2; // y坐标
+}
+// 文本信息
+message TextDetection {
+  string text = 1; //文本
+  int64 confidence = 2; //置信度
+  Coordinate coordinates = 3; // 坐标
+}
+message CustomOcrImageRsp {
+  repeated TextDetection texts = 1; // OCR结果
+  string language = 2; // 语言
+}
+
+message InvitedRequest {
+  int64 request_id = 1; // 请求ID
+  int64 invitor_uin = 2; // 邀请者
+  string invitor_nick = 3; // 邀请者昵称
+  int64 group_id = 4; // 群号
+  string group_name = 5; // 群名
+  bool checked = 6; //  是否已被处理
+  int64 actor = 7; // 处理者，未处理为0
+}
+message JoinRequest {
+  int64 request_id = 1; // 请求ID
+  int64 requester_uin = 2; // 请求者ID
+  string requester_nick = 3; // 请求者昵称
+  string message = 4; // 验证消息
+  int64 group_id = 5; // 群号
+  string group_name = 6; // 群名
+  bool checked = 7; // 是否已被处理
+  bool actor = 8; // 处理者，未处理为0
+}
+message CustomGetGroupSystemMsgReq {
+
+}
+message CustomGetGroupSystemMsgRsp {
+  repeated InvitedRequest invited_requests = 1; // 邀请消息列表
+  repeated JoinRequest join_requests = 2; // 进群消息列表
+}
+message CustomUploadGroupFileReq {
+  int64 group_id = 1; // 群号
+  string file = 2; // 本地文件路径 只能上传本地文件，需要上传 http 文件的话请先调用 download_file API下载
+  string name = 3; // 存储名称
+  string folder = 4; // 父目录ID
+}
+message CustomUploadGroupFileRsp {}
+message CustomGetGroupFileSystemInfoReq {
+  int64 group_id = 1; // 群号
+}
+message CustomGetGroupFileSystemInfoRsp {
+  int64 file_count = 1; // 文件总数
+  int64 limit_count = 2; // 文件上限
+  int64 used_space = 3; //已使用空间
+  int64 total_space = 4; //空间上限
+}
+message GroupFile {
+  int64 group_id = 1; // 群号
+  string file_id = 2; // 文件ID
+  string file_name = 3; // 文件名
+  int64 busid = 4; // 文件类型
+  int64 filez_size = 5; // 文件大小
+  int64 upload_time = 6; // 上传时间
+  int64 dead_time = 7; // 过期时间，永久文件恒为0
+  int64 modify_time = 8; // 最后修改时间
+  int64 download_times = 9; // 下载次数
+  int64 uploader = 10; // 上传者ID
+  string uploader_name = 11; // 上传者名字
+}
+message GroupFolder {
+  int64 group_id = 1; // 群号
+  string folder_id = 2; // 文件夹ID
+  string folder_name = 3; // 文件夹名
+  int64 create_time = 4; // 创建时间
+  int64 creator = 5; // 创建者
+  string creator_name = 6; // 创建者名字
+  int64 total_file_count = 7; // 子文件数量
+}
+message CustomGetGroupRootFilesReq {
+  int64 group_id = 1; // 群号
+}
+message CustomGetGroupRootFilesRsp {
+  repeated GroupFile files = 1; // 文件列表
+  repeated GroupFolder folders = 2; // 文件夹列表
+}
+message CustomGetGroupFilesByFolderReq {
+  int64 group_id = 1; // 群号
+  string folder_id = 2; // 文件夹ID 参考 GroupFolder 对象
+}
+message CustomGetGroupFilesByFolderRsp {
+  repeated GroupFile files = 1; // 文件列表
+  repeated GroupFolder folders = 2; // 文件夹列表
+}
+message CustomGetGroupFileUrlReq {
+  int64 group_id = 1; // 群号
+  string file_id = 2; // 文件ID 参数 GroupFile对象
+  int64 busid = 3; // 文件类型 参数 GroupFile对象
+}
+message CustomGetGroupFileUrlRsp {
+  string url = 1; // 文件下载链接
+}
+message CustomGetStatusReq {
+
+}
+message Statistics {
+  int64 packet_received = 1;// 收到的数据包总数
+  int64 packet_sent = 2; // 发送的数据包总数
+  int64 packet_lost = 3; // 数据包丢失总数
+  int64 message_received = 4; // 接收信息总数
+  int64 message_sent = 5; // 发送信息总数
+  int64 disconnect_times = 6; // tcp链接断开次数
+  int64 lost_times = 7 ; // 账号掉线次数
+}
+message CustomGetStatusRsp {
+  bool app_initialized = 1; // 原 CQHTTP 字段, 恒定为 true
+  bool app_enabled = 2; // 原 CQHTTP 字段, 恒定为 true
+  bool plugins_good = 3; // 原 CQHTTP 字段, 恒定为 true
+  bool app_good = 4; // 原 CQHTTP 字段, 恒定为 true
+  bool online = 5 ; // 表示BOT是否在线
+  bool good = 6; // 同online
+  Statistics stat = 7; // 运行统计
+}
+message CustomGetGroupAtAllRemainReq {
+  int64 group_id = 1; // 群号
+}
+message CustomGetGroupAtAllRemainRsp {
+  bool can_at_all = 1; // 是否可以@全体成员
+  int64 remain_at_all_count_for_group = 2; // 群内所有管理员当天剩余 @全体成员 次数
+  int64 remain_at_all_count_for_uin = 3; // Bot 当天剩余 @全体成员 次数
+}
+
+message CustomGetVipInfoReq {
+  int64 user_id = 1; // QQ号
+}
+message CustomGetVipInfoRsp {
+  int64 user_id = 1; // QQ号
+  string nickname = 2; // 用户昵称
+  int64 level = 3; // QQ等级
+  float level_speed = 4; // 等级加速度
+  string vip_level = 5; // 会员等级
+  int64 vip_growth_speed = 6; // 会员成长速度
+  int64 vip_growth_total = 7; // 会员成长总值
+}
+
+message CustomSendGroupNoticeReq {
+  int64 group_id = 1; // 群号
+  string content = 2 ; // 公告内容
+}
+message CustomSendGroupNoticeRsp {}
+
+message CustomReloadEventFilterReq {
+  string filel = 1; // 事件过滤文件
+}
+message CustomReloadEventFilterRsp {}
+
+/**
+提示
+通过这个API下载的文件能直接放入CQ码作为图片或语音发送
+调用后会阻塞直到下载完成后才会返回数据，请注意下载大文件时的超时
+ */
+message CustomDownloadFileReq {
+  string url = 1; // 连接地址
+  int64 thread_count = 2; // 下载线程数
+  /**
+    headers的数组
+    [
+    "User-Agent=YOUR_UA",
+    "Referer=https://www.baidu.com"
+    ]
+   */
+  repeated string headers = 3; // 自定义请求头
+}
+message CustomDownloadFileRsp {}
+
+// 获取当前账号在线客户端列表请求
+message CustomGetOnlineClientsReq {
+  bool no_cache = 1; // 是否无视缓存
+}
+message Device {
+  int64 app_id = 1; // 客户端ID
+  string device_name = 2; // 设备名称
+  string device_kind = 3; // 设备类型
+}
+message CustomGetOnlineClientsRsp {
+  repeated Device clients = 1; // 在线客户端列表
+}
+
+/**
+提示
+不提供起始序号将默认获取最新的消息
+ */
+message CustomGetGroupMsgHistoryReq {
+  int64 message_seq = 1; // 起始消息序号, 可通过 get_msg 获得
+  int64 group_id = 2; // 群号
+}
+message GroupMsg {
+  Anonymous anonymous = 1;
+  int64 font = 2;
+  int64 group_id = 3;
+  bytes message = 4; // string格式消息为字符串的[]bytes。array格式的为json的[]bytes。
+  string message_type = 5;
+  int64 message_seq = 6;
+  string post_type = 7;
+  string raw_message = 8;
+  int64 self_id = 9;
+  Sender sender = 10;
+  string sub_type = 11;
+  int64 time = 12;
+  int64 user_id = 13;
+  int64 message_id = 14;
+}
+message CustomGetGroupMsgHistoryRsp {
+  repeated GroupMsg messages = 1; // 从起始序号开始的前19条消息
+}
+
+message CustomSetEssenceMsgReq {
+  int64 message_id = 1; // 消息ID
+}
+message CustomSetEssenceMsgRsp {}
+
+message CustomDeleteEssenceMsgReq {
+  int64 message_id = 1; // 消息ID
+}
+message CustomDeleteEssenceMsgRsp {}
+
+message CustomGetEssenceMsgListReq {
+  int64 group_id = 1; // 群号
+}
+message CustomGetEssenceMsgListRsp {
+  int64 sender_id = 1; // 发送者QQ号
+  string sender_nick = 2; // 发送者昵称
+  int64 sender_time = 3; // 消息发送时间
+  int64 operator_id = 4; // 操作者QQ号
+  string operator_nick = 5; // 操作者昵称
+  int64 operator_time = 6; // 精华设置时间
+  int64 message_id = 7; // 消息ID
+}
+
+message CustomCheckUrlSafelyReq {
+  string url = 1; // 需要检查的连接
+}
+message CustomCheckUrlSafelyRsp {
+  int64 level = 1; // 安全等级, 1: 安全 2: 未知 3: 危险
+}
+
+message CustomGetModelShowReq {
+  string model = 1; // 机型名称
+}
+message Variants {
+  string model_show = 1;
+  bool need_pay = 2;
+}
+message CustomGetModelShowRsp {
+  repeated Variants variants = 1;
+}
+
+message CustomSetModelShowReq {
+  string model = 1; // 机型名称
+  string model_show = 2; //
+}
+message CustomSetModelShowRsp {}
+
+message CustomGetMsgReq {
+  int64 message_id = 1; // 消息ID
+}
+message CustomGetMsgRsp {
+  int64 message_id = 1; // 消息ID
+  int64 real_id = 2; // 消息真实ID
+  Sender sender = 3; // 发送者
+  int64 time = 4; // 发送时间
+  bytes message = 5; // 消息内容
+  bytes raw_message = 6; // 原始消息内容
+}
+
+message CustomGetImageReq {
+  string file = 1; // 图片缓存文件名
+}
+message CustomGetImageRsp {
+  int64 size = 1; // 图片源文件大小
+  string filename = 2; // 图片文件原名
+  string url = 3; // 图片下载地址
+}
+
+message CustomSendGroupForwardMsgReq {
+  int64 group_id = 1; // 群号
+  repeated bytes messages = 2; // 自定义转发消息，具体看 https://docs.go-cqhttp.org/cqcode/#%E5%90%88%E5%B9%B6%E8%BD%AC%E5%8F%91%E6%B6%88%E6%81%AF%E8%8A%82%E7%82%B9
+}
+message CustomSendGroupForwardMsgRsp {
+  int64 message_id = 1;
+}
+
+message CustomGetForwardMsgReq {
+  int64 message_id = 1; // 消息ID
+}
+message CustomGetForwardMsgRsp {
+  repeated bytes messages = 1; // 消息列表
+}
