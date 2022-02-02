@@ -222,6 +222,7 @@ func (h *HttpAdapter) SendPrivateMsg(req *entity.SendPrivateMsgReq) (rsp *entity
 // SendGroupMsg 发送群消息
 func (h *HttpAdapter) SendGroupMsg(req *entity.SendGroupMsgReq) (rsp *entity.SendMsgRsp, err error) {
 	url := config.API_URL_SEND_GROUP_MSG
+	// log.Infof("req:%+v", req)
 	msg := MSG{
 		"group_id":    req.GetGroupId(),
 		"auto_escape": req.GetAutoEscape(),
@@ -231,7 +232,7 @@ func (h *HttpAdapter) SendGroupMsg(req *entity.SendGroupMsgReq) (rsp *entity.Sen
 		message := gjson.ParseBytes(req.GetMessage())
 		msg["message"] = message.Map()
 	}
-	res, err := h.Send(url, req)
+	res, err := h.Send(url, msg)
 	_ = json.Unmarshal(res, &rsp)
 	return rsp, err
 }
@@ -250,7 +251,7 @@ func (h *HttpAdapter) SendMsg(req *entity.SendMsgReq) (rsp *entity.SendMsgRsp, e
 		message := gjson.ParseBytes(req.GetMessage())
 		msg["message"] = message.Map()
 	}
-	res, err := h.Send(url, req)
+	res, err := h.Send(url, msg)
 	_ = json.Unmarshal(res, &rsp)
 	return rsp, err
 }

@@ -51,7 +51,40 @@ type AdapterClientInterface interface {
 	SetRestart(ctx context.Context, req *entity.SetRestartReq) (rsp *entity.SetRestartRsp, err error)
 	CleanCache(ctx context.Context, req *entity.CleanCacheReq) (rsp *entity.CleanCacheRsp, err error)
 
+	// go-cqhttp 实现的一些非标准api
+	CustomSetGroupPortrait(ctx context.Context, req *entity.CustomSetGroupPortraitReq) (*entity.CustomSetGroupPortraitRsp, error)
+	CustomGetWordSlices(ctx context.Context, req *entity.CustomGetWordSlicesReq) (*entity.CustomGetWordSlicesRsp, error)
+	CustomOcrImage(ctx context.Context, req *entity.CustomOcrImageReq) (*entity.CustomOcrImageRsp, error)
+	CustomGetGroupSystemMsg(ctx context.Context, req *entity.CustomGetGroupSystemMsgReq) (*entity.CustomGetGroupSystemMsgRsp, error)
+	CustomUploadGroupFile(ctx context.Context, req *entity.CustomUploadGroupFileReq) (*entity.CustomUploadGroupFileRsp, error)
+	CustomGetGroupFileSystemInfo(ctx context.Context, req *entity.CustomGetGroupFileSystemInfoReq) (*entity.CustomGetGroupFileSystemInfoRsp, error)
+	CustomGetGroupRootFiles(ctx context.Context, req *entity.CustomGetGroupRootFilesReq) (*entity.CustomGetGroupRootFilesRsp, error)
+	CustomGetGroupFilesByFolder(ctx context.Context, req *entity.CustomGetGroupFilesByFolderReq) (*entity.CustomGetGroupFilesByFolderRsp, error)
+	CustomGetGroupFileUrl(ctx context.Context, req *entity.CustomGetGroupFileUrlReq) (*entity.CustomGetGroupFileUrlRsp, error)
+	CustomGetStatus(ctx context.Context, req *entity.CustomGetStatusReq) (*entity.CustomGetStatusRsp, error)
+	CustomGetGroupAtAllRemain(ctx context.Context, req *entity.CustomGetGroupAtAllRemainReq) (*entity.CustomGetGroupAtAllRemainRsp, error)
+	CustomGetVipInfo(ctx context.Context, req *entity.CustomGetVipInfoReq) (*entity.CustomGetVipInfoRsp, error)
+	CustomSendGroupNotice(ctx context.Context, req *entity.CustomSendGroupNoticeReq) (*entity.CustomSendGroupNoticeRsp, error)
+	CustomReloadEventFilter(ctx context.Context, req *entity.CustomReloadEventFilterReq) (*entity.CustomReloadEventFilterRsp, error)
+	CustomDownloadFile(ctx context.Context, req *entity.CustomDownloadFileReq) (*entity.CustomDownloadFileRsp, error)
+	CustomGetOnlineClinets(ctx context.Context, req *entity.CustomGetOnlineClientsReq) (*entity.CustomGetOnlineClientsRsp, error)
+	CustomGetGroupMsgHistory(ctx context.Context, req *entity.CustomGetGroupMsgHistoryReq) (*entity.CustomGetGroupMsgHistoryRsp, error)
+	CustomSetEssenceMsg(ctx context.Context, req *entity.CustomSetEssenceMsgReq) (*entity.CustomSetEssenceMsgRsp, error)
+	CustomDeleteEssenceMsg(ctx context.Context, req *entity.CustomDeleteEssenceMsgReq) (*entity.CustomDeleteEssenceMsgRsp, error)
+	CustomGetEssenceMsgList(ctx context.Context, req *entity.CustomGetEssenceMsgListReq) (*entity.CustomGetEssenceMsgListRsp, error)
+	CustomCheckUrlSafely(ctx context.Context, req *entity.CustomCheckUrlSafelyReq) (*entity.CustomCheckUrlSafelyRsp, error)
+	CustomGetModelShow(ctx context.Context, req *entity.CustomGetModelShowReq) (*entity.CustomGetModelShowRsp, error)
+	CustomSetModelShow(ctx context.Context, req *entity.CustomSetModelShowReq) (*entity.CustomSetModelShowRsp, error)
+	CustomGetMsg(ctx context.Context, req *entity.CustomGetMsgReq) (*entity.CustomGetMsgRsp, error)
+	CustomGetImage(ctx context.Context, req *entity.CustomGetImageReq) (*entity.CustomGetImageRsp, error)
+	CustomSendGroupForwardMsg(ctx context.Context, req *entity.CustomSendGroupForwardMsgReq) (*entity.CustomSendGroupForwardMsgRsp, error)
+	CustomGetForwardMsg(ctx context.Context, req *entity.CustomGetForwardMsgReq) (*entity.CustomGetForwardMsgRsp, error)
+
+	// 下面是bot_adapter自身的一些功能实现
 	GetAuthToken(ctx context.Context, req *entity.GetAuthTokenReq) (rsp *entity.GetAuthTokenRsp, err error)
+	GetConfig(ctx context.Context, req *entity.Config) (*entity.Config, error)
+	UpdateConfig(ctx context.Context, req *entity.Config) (*entity.Config, error)
+	SetBotAdapterKill(ctx context.Context, req *entity.SetRestartReq) (*entity.SetRestartRsp, error)
 }
 
 type AdapterService struct {
@@ -247,6 +280,99 @@ func (ac *AdapterService) CleanCache(ctx context.Context, req *entity.CleanCache
 	return ac.client.CleanCache(GetContext(ctx), req)
 }
 
+func (ac *AdapterService) CustomSetGroupPortrait(ctx context.Context, req *entity.CustomSetGroupPortraitReq) (*entity.CustomSetGroupPortraitRsp, error) {
+	return ac.client.CustomSetGroupPortrait(GetContext(ctx), req)
+}
+
+func (ac *AdapterService) CustomGetWordSlices(ctx context.Context, req *entity.CustomGetWordSlicesReq) (*entity.CustomGetWordSlicesRsp, error) {
+	return ac.client.CustomGetWordSlices(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomOcrImage(ctx context.Context, req *entity.CustomOcrImageReq) (*entity.CustomOcrImageRsp, error) {
+	return ac.client.CustomOcrImage(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetGroupSystemMsg(ctx context.Context, req *entity.CustomGetGroupSystemMsgReq) (*entity.CustomGetGroupSystemMsgRsp, error) {
+	return ac.client.CustomGetGroupSystemMsg(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomUploadGroupFile(ctx context.Context, req *entity.CustomUploadGroupFileReq) (*entity.CustomUploadGroupFileRsp, error) {
+	return ac.client.CustomUploadGroupFile(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetGroupFileSystemInfo(ctx context.Context, req *entity.CustomGetGroupFileSystemInfoReq) (*entity.CustomGetGroupFileSystemInfoRsp, error) {
+	return ac.client.CustomGetGroupFileSystemInfo(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetGroupRootFiles(ctx context.Context, req *entity.CustomGetGroupRootFilesReq) (*entity.CustomGetGroupRootFilesRsp, error) {
+	return ac.client.CustomGetGroupRootFiles(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetGroupFilesByFolder(ctx context.Context, req *entity.CustomGetGroupFilesByFolderReq) (*entity.CustomGetGroupFilesByFolderRsp, error) {
+	return ac.client.CustomGetGroupFilesByFolder(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetGroupFileUrl(ctx context.Context, req *entity.CustomGetGroupFileUrlReq) (*entity.CustomGetGroupFileUrlRsp, error) {
+	return ac.client.CustomGetGroupFileUrl(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetStatus(ctx context.Context, req *entity.CustomGetStatusReq) (*entity.CustomGetStatusRsp, error) {
+	return ac.client.CustomGetStatus(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetGroupAtAllRemain(ctx context.Context, req *entity.CustomGetGroupAtAllRemainReq) (*entity.CustomGetGroupAtAllRemainRsp, error) {
+	return ac.client.CustomGetGroupAtAllRemain(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetVipInfo(ctx context.Context, req *entity.CustomGetVipInfoReq) (*entity.CustomGetVipInfoRsp, error) {
+	return ac.client.CustomGetVipInfo(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomSendGroupNotice(ctx context.Context, req *entity.CustomSendGroupNoticeReq) (*entity.CustomSendGroupNoticeRsp, error) {
+	return ac.client.CustomSendGroupNotice(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomReloadEventFilter(ctx context.Context, req *entity.CustomReloadEventFilterReq) (*entity.CustomReloadEventFilterRsp, error) {
+	return ac.client.CustomReloadEventFilter(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomDownloadFile(ctx context.Context, req *entity.CustomDownloadFileReq) (*entity.CustomDownloadFileRsp, error) {
+	return ac.client.CustomDownloadFile(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetOnlineClinets(ctx context.Context, req *entity.CustomGetOnlineClientsReq) (*entity.CustomGetOnlineClientsRsp, error) {
+	return ac.client.CustomGetOnlineClinets(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetGroupMsgHistory(ctx context.Context, req *entity.CustomGetGroupMsgHistoryReq) (*entity.CustomGetGroupMsgHistoryRsp, error) {
+	return ac.client.CustomGetGroupMsgHistory(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomSetEssenceMsg(ctx context.Context, req *entity.CustomSetEssenceMsgReq) (*entity.CustomSetEssenceMsgRsp, error) {
+	return ac.client.CustomSetEssenceMsg(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomDeleteEssenceMsg(ctx context.Context, req *entity.CustomDeleteEssenceMsgReq) (*entity.CustomDeleteEssenceMsgRsp, error) {
+	return ac.client.CustomDeleteEssenceMsg(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetEssenceMsgList(ctx context.Context, req *entity.CustomGetEssenceMsgListReq) (*entity.CustomGetEssenceMsgListRsp, error) {
+	return ac.client.CustomGetEssenceMsgList(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomCheckUrlSafely(ctx context.Context, req *entity.CustomCheckUrlSafelyReq) (*entity.CustomCheckUrlSafelyRsp, error) {
+	return ac.client.CustomCheckUrlSafely(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetModelShow(ctx context.Context, req *entity.CustomGetModelShowReq) (*entity.CustomGetModelShowRsp, error) {
+	return ac.client.CustomGetModelShow(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomSetModelShow(ctx context.Context, req *entity.CustomSetModelShowReq) (*entity.CustomSetModelShowRsp, error) {
+	return ac.client.CustomSetModelShow(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetMsg(ctx context.Context, req *entity.CustomGetMsgReq) (*entity.CustomGetMsgRsp, error) {
+	return ac.client.CustomGetMsg(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetImage(ctx context.Context, req *entity.CustomGetImageReq) (*entity.CustomGetImageRsp, error) {
+	return ac.client.CustomGetImage(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomSendGroupForwardMsg(ctx context.Context, req *entity.CustomSendGroupForwardMsgReq) (*entity.CustomSendGroupForwardMsgRsp, error) {
+	return ac.client.CustomSendGroupForwardMsg(GetContext(ctx), req)
+}
+func (ac *AdapterService) CustomGetForwardMsg(ctx context.Context, req *entity.CustomGetForwardMsgReq) (*entity.CustomGetForwardMsgRsp, error) {
+	return ac.client.CustomGetForwardMsg(GetContext(ctx), req)
+}
+
+// 下面是bot_adapter自身的一些功能实现
 func (ac *AdapterService) GetAuthToken(ctx context.Context, req *entity.GetAuthTokenReq) (rsp *entity.GetAuthTokenRsp, err error) {
 	return ac.client.GetAuthToken(GetContext(ctx), req)
+}
+func (ac *AdapterService) GetConfig(ctx context.Context, req *entity.Config) (*entity.Config, error) {
+	return ac.client.GetConfig(GetContext(ctx), req)
+}
+func (ac *AdapterService) UpdateConfig(ctx context.Context, req *entity.Config) (*entity.Config, error) {
+	return ac.client.UpdateConfig(GetContext(ctx), req)
+}
+func (ac *AdapterService) SetBotAdapterKill(ctx context.Context, req *entity.SetRestartReq) (*entity.SetRestartRsp, error) {
+	return ac.client.SetBotAdapterKill(GetContext(ctx), req)
 }

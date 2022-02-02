@@ -15,7 +15,7 @@ type MessagePrivate struct {
 	SubType     string         `json:"sub_type"`     // friend、group、other  消息子类型，如果是好友则是 friend，如果是群临时会话则是 group
 	MessageID   int64          `json:"message_id"`   // 消息 ID
 	UserID      int64          `json:"user_id"`      // 发送者 QQ 号
-	Message     string         `json:"message"`      // 消息内容 string 或 array
+	Message     interface{}    `json:"message"`      // 消息内容 string 或 array
 	RawMessage  string         `json:"raw_message"`  // 原始消息内容
 	Font        int64          `json:"font"`         // 0 字体
 	Sender      *MessageSender `json:"sender"`       // 发送人信息
@@ -32,7 +32,7 @@ type MessageGroup struct {
 	GroupID     int64             `json:"group_id"`     // 群号
 	UserID      int64             `json:"user_id"`      // 发送者 QQ 号
 	Anonymous   *MessageAnonymous `json:"anonymous"`    // 匿名信息，如果不是匿名消息则为 null
-	Message     string            `json:"message"`      // 消息内容 string 或 array
+	Message     interface{}       `json:"message"`      // 消息内容 string 或 array
 	RawMessage  string            `json:"raw_message"`  // 原始消息内容
 	Font        int64             `json:"font"`         // 0 字体
 	Sender      *MessageSender    `json:"sender"`       // 发送人信息
