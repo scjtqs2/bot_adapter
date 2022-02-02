@@ -73,7 +73,7 @@ func EnShowImageCode(file string, id int, cache int) string {
 
 // EnAtCode 生成At CQ码。 @all 的时候 qq填 `all`
 func EnAtCode(qq string) string {
-	return EnCodeCQ(NewAt(qq)) + " "
+	return EnCodeCQ(NewAt(qq))
 }
 
 // EnFaceCode 生成表情CQ码
