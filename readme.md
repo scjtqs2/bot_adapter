@@ -5,3 +5,4 @@
 3. app使用grpc的接口调用bot_adapter实现的cqhttp的onebot11接口。带权限管理
 
 参数配置参考 `demo.config.yaml`。以 config.yaml命名
+

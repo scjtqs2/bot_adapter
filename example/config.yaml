@@ -1,0 +1,100 @@
+server_type: http
+http_config:
+  server_addr: http://go-cqhttp:5700
+  token: go-cqhttp-token
+  local_host: 0.0.0.0:5800
+  secret: "go-cqhttp-secret"
+plugins:
+  - app_id: "go-cqhttp"
+    app_secret: "HGJKLHSADJKLG"
+    encrypt_key: ""
+    post_addr: ""
+    plugin_name: go-cqhttp
+
+  - app_id: "1"
+    app_secret: "HGJKLHSADJKLG"
+    encrypt_key: "bot-music-encrypt-key"
+    post_addr: http://bot-music:8080
+    plugin_name: bot-music
+    register_key_words:
+      - msg_type: private
+        prefix_key_words:
+          - 点歌
+          - qq点歌
+          - 网易点歌
+          - 选
+      - msg_type: group
+        prefix_key_words:
+          - 点歌
+          - qq点歌
+          - 网易点歌
+          - 选
+
+  - app_id: "2"
+    app_secret: "HGJKLHSADJKLG"
+    encrypt_key: "bot-request-add-encrypt-key"
+    post_addr: http://bot-request-add:8080
+    plugin_name: bot-request-add
+
+  - app_id: "3"
+    app_secret: "HGJKLHSADJKLG"
+    encrypt_key: "bot-search-encrypt-key"
+    post_addr: http://bot-search:8080
+    plugin_name: bot-search
+    register_key_words:
+      - msg_type: private
+        prefix_key_words:
+          - "#取码"
+          - "#OCR"
+          - "#ROLL"
+      - msg_type: group
+        prefix_key_words:
+          - "#取码"
+          - "#OCR"
+          - "#ROLL"
+
+  - app_id: "4"
+    app_secret: "HGJKLHSADJKLG"
+    encrypt_key: "bot-app-chat-encrypt-key"
+    post_addr: http://bot-app-chat:8080
+    plugin_name: bot-app-chat
+    register_key_words:
+      - msg_type: private
+        prefix_key_words:
+          - "#"
+      - msg_type: group
+        prefix_key_words:
+          - "#"
+
+grpc_config:
+  addr: 0.0.0.0:8001
+  max_connection_age_grace: 120
+  max_connection_idle: 60
+  timeout: 60
+
+permissions:
+  - app_id: "go-cqhttp"
+    is_admin: true
+    is_only_cqhttp: false
+    api_permissions: [ ]
+    push_permissions: [ ]
+  - app_id: "1"
+    is_admin: false
+    is_only_cqhttp: true
+    api_permissions: [ ]
+    push_permissions: [ ]
+  - app_id: "2"
+    is_admin: false
+    is_only_cqhttp: true
+    api_permissions: [ ]
+    push_permissions: [ ]
+  - app_id: "3"
+    is_admin: false
+    is_only_cqhttp: true
+    api_permissions: [ ]
+    push_permissions: [ ]
+  - app_id: "4"
+    is_admin: false
+    is_only_cqhttp: true
+    api_permissions: [ ]
+    push_permissions: [ ]

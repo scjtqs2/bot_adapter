@@ -1,0 +1,89 @@
+version: '3'
+services:
+  # cqhttp的一个bot
+  go-cqhttp:
+    image: scjtqs/cqhttp:1.0.2
+    restart: always
+    privileged: true
+    ports:
+      - 5700:5700
+      - 9999:8080
+    volumes:
+      - ./cqhttp-data:/data
+    environment:
+      - UPDATE=1
+
+  # cqptth 的适配器
+  bot-adapter:
+    image: scjtqs/bot_adapter:latest
+    restart: always
+    ports:
+      - 5800:5800
+      - 8001:8001
+    volumes:
+      - ./adpter-data:/data
+      - ./config.yaml:/data/config.yaml
+    environment:
+      - UPDATE=1                                  # 标记 升级镜像后更新二进制文件
+      - ADAPTER_SECRET=bot-adapter--secret        # 用于jwt加密
+      - HTTP_LISTEN=0.0.0.0:5800                  # go-cqhttp 的http 监听地址
+      - HTTP_TOKEN=go-cqhttp-token                # go-cqhttp 的token
+      - HTTP_SECRET=go-cqhttp-secret              # go-cqhttp的 http post配置给bot-adapter的secret。
+      - HTTP_CQHTTP_ADDR=http://go-cqhttp:5700    # bot-adapter 的http的监听地址，用来接收go-cqhttp 的 post推送
+
+  # 音乐demo
+  bot-music:
+    image: scjtqs/bot_app:music
+    restart: always
+    volumes:
+      - ./bot-music:/data
+    environment:
+      - UPDATE=1
+      - HTTP_PORT=8080
+      - APP_ENCRYPT_KEY=bot-music-encrypt-key
+      - APP_ID=1
+      - APP_SECRET=HGJKLHSADJKLG
+      - ADAPTER_ADDR=bot-adapter:8001              # bot-adapter的grpc server地址
+
+  # 自动同意加群和加好友 demo
+  bot-request-add:
+    image: scjtqs/bot_app:request
+    restart: always
+    volumes:
+      - ./bot-request-add:/data
+    environment:
+      - UPDATE=1
+      - HTTP_PORT=8080
+      - APP_ENCRYPT_KEY=bot-request-add-encrypt-key
+      - APP_ID=2
+      - APP_SECRET=HGJKLHSADJKLG
+      - ADAPTER_ADDR=bot-adapter:8001              # bot-adapter的grpc server地址
+
+  # 取码功能 demo
+  bot-search:
+    image: scjtqs/bot_app:codefetch
+    restart: always
+    volumes:
+      - ./bot-search:/data
+    environment:
+      - UPDATE=1
+      - HTTP_PORT=8080
+      - APP_ENCRYPT_KEY=bot-search-encrypt-key
+      - APP_ID=3
+      - APP_SECRET=HGJKLHSADJKLG
+      - ADAPTER_ADDR=bot-adapter:8001              # bot-adapter的grpc server地址
+
+  # 聊天 demo
+  bot-app-chat:
+    image: scjtqs/bot_app:chat
+    restart: always
+    volumes:
+      - ./bot-app-chat:/data
+    environment:
+      - UPDATE=1
+      - HTTP_PORT=8080
+      - APP_ENCRYPT_KEY=bot-app-chat-encrypt-key
+      - APP_ID=4
+      - APP_SECRET=HGJKLHSADJKLG
+      - TULING_KEY=                                # 图灵机器人的key
+      - ADAPTER_ADDR=bot-adapter:8001              # bot-adapter的grpc server地址
