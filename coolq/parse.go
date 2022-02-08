@@ -3,6 +3,7 @@ package coolq
 import (
 	"math"
 	"regexp"
+	"strconv"
 	"sync"
 )
 
@@ -30,7 +31,7 @@ const (
 	POKE      = "poke" // 群聊 戳一戳
 	GIFT      = "gift"
 	CARDIMAGE = "cardimage" // 装逼大图
-	TTS       = "tts" // tts 语音
+	TTS       = "tts"       // tts 语音
 )
 
 var (
@@ -63,4 +64,37 @@ func SplitURL(s string) []string {
 	return result
 }
 
+// ParseAtCode 解析 CQ码的AT 中的QQ号
+func ParseAtCode(message string) []string {
+	patten := `\[CQ:at,qq=(\d+)\]`
+	r, _ := regexp.Compile(patten)
+	p := r.FindAllStringSubmatch(message, -1)
+	var ret []string
+	for _, strings := range p {
+		ret = append(ret, strings[1])
+	}
+	return ret
+}
 
+// IsAtMe 判断是否at某人
+func IsAtMe(message string, qq int64) (bool, error) {
+	patten := `\[CQ:at,qq=(\d+)\]`
+	r, err := regexp.Compile(patten)
+	if err != nil {
+		return false, err
+	}
+	p := r.FindAllStringSubmatch(message, -1)
+	qqstr := strconv.FormatInt(qq, 10)
+	for _, strings := range p {
+		if strings[1] == qqstr {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+// CleanCQCode 用正则清理掉所有的 CQ码
+func CleanCQCode(message string) string {
+	reg, _ := regexp.Compile(`\[CQ:\w+?.*?]`)
+	return reg.ReplaceAllString(message, "")
+}
