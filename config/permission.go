@@ -8,7 +8,7 @@ const (
 	onebot-11 的标准接口
 	*/
 	PERMISSION_FOR_SEND_PRIVATE_MSG        = "send_private_msg"          // 发送私聊消息
-	PERMISSION_FOR_SEND_GROUP_MSG          = "send_group_msg"            // 发送私聊消息
+	PERMISSION_FOR_SEND_GROUP_MSG          = "send_group_msg"            // 发送群聊消息
 	PERMISSION_FOR_SEND_MSG                = "send_msg"                  // 发送消息
 	PERMISSION_FOR_DELETE_MSG              = "delete_msg"                // 撤回消息
 	PERMISSION_FOR_GET_MSG                 = "get_msg"                   // 获取消息

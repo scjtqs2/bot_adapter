@@ -15,14 +15,14 @@ http_config:
 # 扩展配置 （这里demo 配置了两个app样例，根据实际情况自行增加）
 plugins:
   # 这是一个数组，第一个扩展app配置
-  - app_id: "10086"                                       # 第一个app的appid。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
-    app_secret: "7654321"                                 # 第一个app的appsecret。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+  - app_id: "go-cqhttp"                                       # 第一个app的appid。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
+    app_secret: "HGJKLHSADJKLG"                                 # 第一个app的appsecret。在这里定义，不和其他app的重复，必须和扩展app侧配置的参数一致
     encrypt_key: "krjtklejwkj"                            # 推送事件的加密key。
     plugin_name: "GO-CQHTTP"                              # 第一个扩展app的名称
     post_addr: ""                                         # 第一个扩展app接收推送的地址。如果app不需要接收推送，这里留空字符串
 server_type: http                                         # cqhttp对接类型。目前仅支持http
 permissions:
-  - app_id: "10086"                                       #  第一个app的权限配置
+  - app_id: "go-cqhttp"                                       #  第一个app的权限配置
     is_admin: true                                        #  第一个app给分配最高权限
     is_only_cqhttp: false
     api_permissions: [ ]
