@@ -13,9 +13,13 @@
   > https://github.com/scjtqs2/bot_app_request_add
 + bot-search 取码demo
   > https://github.com/scjtqs2/bot_app_codefetch
-+ bot-app-chat 图灵机器人
++ bot-chat 图灵机器人
   > https://github.com/scjtqs2/bot_app_chat
   > 
++ bot-github github查询/事件推送
+  > https://github.com/scjtqs2/bot_app_github
+  > 
+  > webhook地址 POST/JSON http://ip:8111/postreceive  
 
 ## 使用docker-compose
 将当前的example目录放入到你的服务器目录

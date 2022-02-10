@@ -81,17 +81,37 @@ services:
       - APP_SECRET=HGJKLHSADJKLG
       - ADAPTER_ADDR=bot-adapter:8001              # bot-adapter的grpc server地址
 
-  # 聊天 demo
-  bot-app-chat:
-    image: scjtqs/bot_app:chat
+  # github demo
+  bot-github:
+    image: scjtqs/bot_app:github
     restart: always
+    ports:
+      - 8111:80
     volumes:
-      - ./bot-app-chat:/data
+      - ./bot-github:/data
     environment:
       - UPDATE=1
       - HTTP_PORT=8080
-      - APP_ENCRYPT_KEY=bot-app-chat-encrypt-key
+      - APP_ENCRYPT_KEY=bot-github-encrypt-key
       - APP_ID=4
+      - APP_SECRET=HGJKLHSADJKLG
+      - ADAPTER_ADDR=bot-adapter:8001              # bot-adapter的grpc server地址
+      - GITHUB_WEBHOOK_ENABLE=true
+      - GITHUB_WEBHOOK_SECRET=secret
+      - GITHUB_WEBHOOK_NOTIFY_QQ=
+      - GITHUB_WEBHOOK_NOTIFY_GROUP=
+
+  # 聊天 demo
+  bot-chat:
+    image: scjtqs/bot_app:chat
+    restart: always
+    volumes:
+      - ./bot-chat:/data
+    environment:
+      - UPDATE=1
+      - HTTP_PORT=8080
+      - APP_ENCRYPT_KEY=bot-chat-encrypt-key
+      - APP_ID=10086
       - APP_SECRET=HGJKLHSADJKLG
       - TULING_KEY=                                # 图灵机器人的key
       - ADAPTER_ADDR=bot-adapter:8001              # bot-adapter的grpc server地址

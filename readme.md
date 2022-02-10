@@ -24,5 +24,9 @@
     1. `X-Lark-Request-Timestamp` 时间戳
     2. `X-Lark-Request-Nonce` nonce 随机字符串
     3. `X-Lark-Signature` 当前推送的签名，用于和自己计算的签名做对比
-  
+
   加密和签名方法，在本项目的sha256里面，参考自`飞书`的推送
+
+## example demo
+
+docker-compose方式的 使用 [demo](example)

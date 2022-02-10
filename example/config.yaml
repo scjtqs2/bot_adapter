@@ -55,9 +55,22 @@ plugins:
 
   - app_id: "4"
     app_secret: "HGJKLHSADJKLG"
-    encrypt_key: "bot-app-chat-encrypt-key"
-    post_addr: http://bot-app-chat:8080
-    plugin_name: bot-app-chat
+    encrypt_key: "bot-github-encrypt-key"
+    post_addr: http://bot-github:8080
+    plugin_name: bot-github
+    register_key_words:
+      - msg_type: private
+        prefix_key_words:
+          - "#github"
+      - msg_type: group
+        prefix_key_words:
+          - "#github"
+
+  - app_id: "10086"
+    app_secret: "HGJKLHSADJKLG"
+    encrypt_key: "bot-app-encrypt-key"
+    post_addr: http://bot-chat:8080
+    plugin_name: bot-chat
     register_key_words:
       - msg_type: private
         prefix_key_words:
@@ -94,6 +107,11 @@ permissions:
     api_permissions: [ ]
     push_permissions: [ ]
   - app_id: "4"
+    is_admin: false
+    is_only_cqhttp: true
+    api_permissions: [ ]
+    push_permissions: [ ]
+  - app_id: "10086"
     is_admin: false
     is_only_cqhttp: true
     api_permissions: [ ]
