@@ -2,7 +2,7 @@ version: '3'
 services:
   # cqhttp的一个bot
   go-cqhttp:
-    image: scjtqs/cqhttp:1.0.2
+    image: scjtqs/cqhttp:1.0.3
     restart: always
     privileged: true
     ports:
@@ -12,6 +12,14 @@ services:
       - ./cqhttp-data:/data
     environment:
       - UPDATE=1
+      - BOT_ADAPTER_ENABLE=true
+      - BOT_ADAPTER_POST_URL=http://bot-adapter:5800/msginput  # bot-adapter的接收推送地址
+      - BOT_ADAPTER_POST_SECRET=go-cqhttp-secret               # 需要和bot-adapter中的 HTTP_SECRET一致
+      - BOT_ADAPTER_POST_INTERVAL=1500                         # 推送失败重试间隔
+      - BOT_ADAPTER_POST_RETRIES=3                             # 推送失败重试次数
+      - BOT_ADAPTER_APPID=go-cqhttp                            # bot-adapter中给go-cqhttp配置的管理员权限app的appid
+      - BOT_ADAPTER_APPSECRET=HGJKLHSADJKLG                    # 上面对应的appSecret
+      - BOT_ADAPTER_GRPC_ADDR=bot-adapter:8001                 # bot-adapter 的grpc监听地址
 
   # cqptth 的适配器
   bot-adapter:

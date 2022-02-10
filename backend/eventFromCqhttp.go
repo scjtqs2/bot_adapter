@@ -112,7 +112,7 @@ func (e *EventResoveBackend) doPush(data []byte, plugin *config.PluginConfig) {
 		log.Warnf("plugin %s encrypt msg faild err:%s", plugin.PluginName, err.Error())
 		return
 	}
-	e.doPost(sha256.EncryptObj{Encrypt: enc}, plugin)
+	e.doPost(sha256.EncryptObj{Encrypt: enc, AppID: plugin.AppID}, plugin)
 }
 
 // parseEventPrimissCheck 解析消息内容 校验推送权限

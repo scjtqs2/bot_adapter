@@ -15,6 +15,7 @@ import (
 
 type EncryptObj struct {
 	Encrypt string `json:"encrypt"`
+	AppID   string `json:"app_id"`
 }
 
 // Encrypt 数据加密
