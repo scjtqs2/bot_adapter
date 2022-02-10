@@ -43,11 +43,12 @@ type HTTPConfig struct {
 
 // PluginConfig 插件配置列表
 type PluginConfig struct {
-	AppID            string              `json:"app_id" yaml:"app_id"`           // 随便一个字符串就行，用来生成token的
-	AppSecret        string              `json:"app_secret" yaml:"app_secret"`   // 随便一个字符串就行，用来生成token的
-	EncryptKey       string              `json:"encrypt_key" yaml:"encrypt_key"` // 推送数据的加密key
-	PostAddr         string              `json:"post_addr" yaml:"post_addr"`     // 接收推送的地址
-	PluginName       string              `json:"plugin_name" yaml:"plugin_name"`
+	AppID            string              `json:"app_id" yaml:"app_id"`                         // 随便一个字符串就行，用来生成token的
+	AppSecret        string              `json:"app_secret" yaml:"app_secret"`                 // 随便一个字符串就行，用来生成token的
+	EncryptKey       string              `json:"encrypt_key" yaml:"encrypt_key"`               // 推送数据的加密key
+	PostAddr         string              `json:"post_addr" yaml:"post_addr"`                   // 接收推送的地址
+	PluginName       string              `json:"plugin_name" yaml:"plugin_name"`               // app名称
+	PluginDesc       string              `json:"plugin_desc" yaml:"plugin_desc"`               // app描述
 	RegisterKeyWords []*RegisterKeyWords `json:"register_key_words" yaml:"register_key_words"` // 注册用的拦截开头字符。注册了后，排在它后面的插件将无法收到对应消息的推送
 }
 
