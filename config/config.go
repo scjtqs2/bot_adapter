@@ -3,10 +3,11 @@ package config
 import (
 	_ "embed"
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v3"
 	"os"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v3"
 )
 
 // Path 配置文件路径
@@ -33,7 +34,7 @@ type GrpcConfig struct {
 	Timeout               int    `json:"timeout" yaml:"timeout"`
 }
 
-// HttpConfig http的配置信息
+// HTTPConfig http的配置信息
 type HTTPConfig struct {
 	ServerAddr string `json:"server_addr" yaml:"server_addr"`
 	Token      string `json:"token" yaml:"token"`

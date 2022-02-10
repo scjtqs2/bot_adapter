@@ -81,16 +81,15 @@ func DeCode(raw string) (r []MsgElem) {
 
 // decodeText 解码文字
 func decodeText(text string) string {
-	text = strings.Replace(text, "&amp;", "&", -1)
-	text = strings.Replace(text, "&#91;", "[", -1)
-	text = strings.Replace(text, "&#93;", "]", -1)
+	text = strings.ReplaceAll(text, "&amp;", "&")
+	text = strings.ReplaceAll(text, "&#91;", "[")
+	text = strings.ReplaceAll(text, "&#93;", "]")
 	return text
-
 }
 
 // decodeValue 解码CQ里的值
 func decodeValue(text string) string {
 	text = decodeText(text)
-	text = strings.Replace(text, "&#44;", ",", -1)
+	text = strings.ReplaceAll(text, "&#44;", ",")
 	return text
 }

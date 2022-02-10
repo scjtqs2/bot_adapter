@@ -1,9 +1,9 @@
-// Package posttype  https://github.com/botuniverse/onebot-11/tree/master/event
+// Package event  https://github.com/botuniverse/onebot-11/tree/master/event
 package event
 
 const (
-	MESSAGE_TYPE_PRIVATE = "private" // 私聊消息
-	MESSAGE_TYPE_GROUP   = "group"   // 群消息
+	MessageTypePrivate = "private" // 私聊消息
+	MessageTypeGroup   = "group"   // 群消息
 )
 
 // MessagePrivate 私聊消息

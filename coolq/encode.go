@@ -14,9 +14,9 @@ func EnCodes(data []MsgElem) string {
 }
 
 // EnCodeCQ 单个array节点转CQ码
-func EnCodeCQ(Data MsgElem) string {
-	output := "[CQ:" + Data.Type
-	for key, value := range Data.Data {
+func EnCodeCQ(data MsgElem) string {
+	output := "[CQ:" + data.Type
+	for key, value := range data.Data {
 		if value == "" {
 			continue
 		}
@@ -26,16 +26,15 @@ func EnCodeCQ(Data MsgElem) string {
 }
 
 func encodeText(text string) string {
-	text = strings.Replace(text, "&", "&amp;", -1)
-	text = strings.Replace(text, "[", "&#91;", -1)
-	text = strings.Replace(text, "]", "&#93;", -1)
+	text = strings.ReplaceAll(text, "&", "&amp;")
+	text = strings.ReplaceAll(text, "[", "&#91;")
+	text = strings.ReplaceAll(text, "]", "&#93;")
 	return text
-
 }
 
 func encodeValue(text string) string {
 	text = encodeText(text)
-	text = strings.Replace(text, ",", "&#44;", -1)
+	text = strings.ReplaceAll(text, ",", "&#44;")
 	return text
 }
 
@@ -46,7 +45,7 @@ func EnXMLCode(message string, resid int) string {
 
 // EnJSONCode 生成JSON的CQ码
 func EnJSONCode(data string, redis int) string {
-	return EnCodeCQ(NewJson(data, redis)) + " "
+	return EnCodeCQ(NewJSON(data, redis)) + " "
 }
 
 // EnImageCode 生成Image的CQ码

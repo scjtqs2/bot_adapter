@@ -8,14 +8,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/kataras/iris/v12"
-	"github.com/scjtqs2/bot_adapter/config"
-	"github.com/scjtqs2/bot_adapter/pb/entity"
-	log "github.com/sirupsen/logrus"
-	"github.com/tidwall/gjson"
 	"io"
 	"net/http"
 	"time"
+
+	"github.com/kataras/iris/v12"
+	log "github.com/sirupsen/logrus"
+	"github.com/tidwall/gjson"
+
+	"github.com/scjtqs2/bot_adapter/config"
+	"github.com/scjtqs2/bot_adapter/pb/entity"
 )
 
 // HttpAdapter http方法的结构体
@@ -491,7 +493,7 @@ func (h *HttpAdapter) CleanCache(req *entity.CleanCacheReq) (rsp *entity.CleanCa
 func (h *HttpAdapter) Send(action string, msg interface{}) ([]byte, error) {
 	var res *http.Response
 	body, _ := json.Marshal(msg)
-	client := http.Client{Timeout: time.Second * time.Duration(time.Second*2)}
+	client := http.Client{Timeout: time.Second * 2}
 	header := make(http.Header)
 	header.Set("Authorization", fmt.Sprintf("Bearer %s", h.conf.HTTPConfig.Token))
 	header.Set("Content-Type", "application/json")
@@ -570,7 +572,6 @@ func (h *HttpAdapter) msginput(ctx iris.Context) {
 
 // checkSignature 校验签名
 func (h *HttpAdapter) checkSignature(ctx iris.Context, rawData []byte) error {
-
 	signature := ctx.GetHeader("X-Signature")
 	if signature != "" {
 		signature = signature[5:]
@@ -586,7 +587,7 @@ func (h *HttpAdapter) checkSignature(ctx iris.Context, rawData []byte) error {
 }
 
 // HttpInit 初始化http的方法
-func HttpInit(cfg *config.Config) (AdapterInterface, error) {
+func HttpInit(cfg *config.Config) (AdapterSvc, error) {
 	adpt := &HttpAdapter{
 		EventChan: make(chan []byte, 200),
 	}

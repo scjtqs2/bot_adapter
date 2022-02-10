@@ -2,20 +2,22 @@ package backend
 
 import (
 	"context"
+	"os"
+	"time"
+
+	"go.uber.org/dig"
+	"gopkg.in/yaml.v3"
+
 	"github.com/scjtqs2/bot_adapter/adapter"
 	"github.com/scjtqs2/bot_adapter/config"
 	"github.com/scjtqs2/bot_adapter/handler"
 	"github.com/scjtqs2/bot_adapter/pb/entity"
-	"go.uber.org/dig"
-	"gopkg.in/yaml.v3"
-	"os"
-	"time"
 )
 
 // AdapterService 真实的业务处理
 type AdapterService struct {
 	adapterHander *handler.AdapterHandler
-	adapter       adapter.AdapterInterface
+	adapter       adapter.AdapterSvc
 }
 
 func (a AdapterService) CustomSetGroupPortrait(ctx context.Context, req *entity.CustomSetGroupPortraitReq) (*entity.CustomSetGroupPortraitRsp, error) {
@@ -321,7 +323,7 @@ func (a AdapterService) CleanCache(ctx context.Context, req *entity.CleanCacheRe
 func NewAdapterService(ct *dig.Container) (*AdapterService, error) {
 	var adapt AdapterService
 	adapt.adapterHander, _ = handler.NewAdapterHandler(ct)
-	_ = ct.Invoke(func(a adapter.AdapterInterface) {
+	_ = ct.Invoke(func(a adapter.AdapterSvc) {
 		adapt.adapter = a
 	})
 	return &adapt, nil

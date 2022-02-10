@@ -2,11 +2,13 @@ package client
 
 import (
 	"context"
+
 	"google.golang.org/grpc/metadata"
 )
 
 var token string
 
+// GetContext 给ctx添加 authorization
 func GetContext(ctx context.Context) context.Context {
 	if ctx == nil {
 		ctx = context.TODO()

@@ -3,12 +3,14 @@ package client
 
 import (
 	"context"
-	"github.com/scjtqs2/bot_adapter/pb/entity"
-	"github.com/scjtqs2/bot_adapter/pb/service"
+	"time"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/keepalive"
-	"time"
+
+	"github.com/scjtqs2/bot_adapter/pb/entity"
+	"github.com/scjtqs2/bot_adapter/pb/service"
 )
 
 type AdapterClientInterface interface {

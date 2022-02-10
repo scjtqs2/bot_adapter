@@ -3,6 +3,7 @@ package adapter
 
 import (
 	"errors"
+
 	"github.com/scjtqs2/bot_adapter/config"
 	"github.com/scjtqs2/bot_adapter/pb/entity"
 )
@@ -10,8 +11,8 @@ import (
 // MSG 消息Map
 type MSG map[string]interface{}
 
-// AdapterInterface 适配器定义
-type AdapterInterface interface {
+// AdapterSvc 适配器定义
+type AdapterSvc interface {
 	Send(action string, msg interface{}) ([]byte, error) // 统一的发送数据到go-cqhttp
 	GetChan() chan []byte                                // 统一的接收上报消息
 	// 下面的是 go-cqhttp的 onebot11的标准接口
@@ -85,9 +86,9 @@ type AdapterInterface interface {
 }
 
 // NewAdapter 初始化适配器
-func NewAdapter(cfg *config.Config) (AdapterInterface, error) {
+func NewAdapter(cfg *config.Config) (AdapterSvc, error) {
 	var (
-		adpt AdapterInterface
+		adpt AdapterSvc
 		err  error
 	)
 	switch cfg.ServerType {

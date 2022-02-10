@@ -1,8 +1,9 @@
 package sha256
 
 import (
-	log "github.com/sirupsen/logrus"
 	"testing"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func TestEncrypt(t *testing.T) {

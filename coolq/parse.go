@@ -69,7 +69,7 @@ func ParseAtCode(message string) []string {
 	patten := `\[CQ:at,qq=(\d+)\]`
 	r, _ := regexp.Compile(patten)
 	p := r.FindAllStringSubmatch(message, -1)
-	var ret []string
+	ret := make([]string, 0)
 	for _, strings := range p {
 		ret = append(ret, strings[1])
 	}
@@ -95,6 +95,6 @@ func IsAtMe(message string, qq int64) (bool, error) {
 
 // CleanCQCode 用正则清理掉所有的 CQ码
 func CleanCQCode(message string) string {
-	reg, _ := regexp.Compile(`\[CQ:\w+?.*?]`)
+	reg := regexp.MustCompile(`\[CQ:\w+?.*?]`)
 	return reg.ReplaceAllString(message, "")
 }

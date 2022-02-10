@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+// EncryptObj 推送的加密json的结构体
 type EncryptObj struct {
 	Encrypt string `json:"encrypt"`
 	AppID   string `json:"app_id"`
@@ -23,7 +24,7 @@ func Encrypt(data []byte, key string) (string, error) {
 	keyBs := sha256.Sum256([]byte(key))
 	block, err := aes.NewCipher(keyBs[:sha256.Size])
 	if err != nil {
-		return "", fmt.Errorf("AESNewCipher Error[%v]", err)
+		return "", fmt.Errorf("AESNewCipher err:%v", err)
 	}
 	content := pKCS5Padding(data, aes.BlockSize)
 	cipherBytes := make([]byte, len(content))
@@ -38,7 +39,7 @@ func Encrypt(data []byte, key string) (string, error) {
 func Decrypt(encrypt string, key string) (string, error) {
 	buf, err := base64.StdEncoding.DecodeString(encrypt)
 	if err != nil {
-		return "", fmt.Errorf("base64StdEncode Error[%v]", err)
+		return "", fmt.Errorf("base64StdEncode err:%v", err)
 	}
 	if len(buf) < aes.BlockSize {
 		return "", errors.New("cipher  too short")
@@ -46,7 +47,7 @@ func Decrypt(encrypt string, key string) (string, error) {
 	keyBs := sha256.Sum256([]byte(key))
 	block, err := aes.NewCipher(keyBs[:sha256.Size])
 	if err != nil {
-		return "", fmt.Errorf("AESNewCipher Error[%v]", err)
+		return "", fmt.Errorf("AESNewCipher err:%v", err)
 	}
 	iv := buf[:aes.BlockSize]
 	buf = buf[aes.BlockSize:]
@@ -73,10 +74,10 @@ func pKCS5Trimming(encrypt []byte) []byte {
 }
 
 // RandString 生成随机字符串，用来生成IV
-func RandString(len int) string {
+func RandString(lenth int) string {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
-	b := make([]byte, len)
-	for i := 0; i < len; i++ {
+	b := make([]byte, lenth)
+	for i := 0; i < lenth; i++ {
 		a := r.Intn(26) + 65
 		b[i] = byte(a)
 	}

@@ -3,12 +3,14 @@ package backend
 import (
 	"context"
 	"fmt"
+
+	log "github.com/sirupsen/logrus"
+	"go.uber.org/dig"
+
 	"github.com/scjtqs2/bot_adapter/auth"
 	"github.com/scjtqs2/bot_adapter/config"
 	"github.com/scjtqs2/bot_adapter/pb/entity"
 	"github.com/scjtqs2/bot_adapter/pb/service"
-	log "github.com/sirupsen/logrus"
-	"go.uber.org/dig"
 )
 
 // PermissionService 权限验证处理 暂时不处理，后面有空再做

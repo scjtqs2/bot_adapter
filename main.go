@@ -1,12 +1,14 @@
 package main
 
 import (
-	"github.com/scjtqs2/bot_adapter/backend"
-	"github.com/scjtqs2/bot_adapter/config"
-	log "github.com/sirupsen/logrus"
-	"go.uber.org/dig"
 	"os"
 	"os/signal"
+
+	log "github.com/sirupsen/logrus"
+	"go.uber.org/dig"
+
+	"github.com/scjtqs2/bot_adapter/backend"
+	"github.com/scjtqs2/bot_adapter/config"
 )
 
 // Version 版本信息

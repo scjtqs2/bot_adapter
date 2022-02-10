@@ -2,9 +2,10 @@ package coolq
 
 import (
 	"encoding/json"
+	"testing"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/tidwall/gjson"
-	"testing"
 )
 
 func TestEnCode(t *testing.T) {

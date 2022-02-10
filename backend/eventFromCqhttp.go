@@ -1,18 +1,21 @@
+// Package backend 后端处理
 package backend
 
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/scjtqs2/bot_adapter/config"
-	"github.com/scjtqs2/bot_adapter/event"
-	"github.com/scjtqs2/bot_adapter/sha256"
-	log "github.com/sirupsen/logrus"
-	"github.com/tidwall/gjson"
 	"net/http"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/tidwall/gjson"
+
+	"github.com/scjtqs2/bot_adapter/config"
+	"github.com/scjtqs2/bot_adapter/event"
+	"github.com/scjtqs2/bot_adapter/sha256"
 )
 
 // EventResoveBackend 上报消息处理结构体
@@ -133,11 +136,11 @@ func (e *EventResoveBackend) parseEventPrimissCheck(data []byte, plugin *config.
 	switch msg.Get("post_type").String() {
 	case "message": // 消息事件
 		switch msg.Get("message_type").String() {
-		case event.MESSAGE_TYPE_PRIVATE:
+		case event.MessageTypePrivate:
 			// var req event.MessagePrivate
 			// _ = json.Unmarshal([]byte(msg.Raw), &req)
 			return config.CheckPermission(config.PUSH_PERMISSION_MESSAGE_PRIVATE, permissionOpt.PushPermissions)
-		case event.MESSAGE_TYPE_GROUP:
+		case event.MessageTypeGroup:
 			// var req event.MessageGroup
 			// _ = json.Unmarshal([]byte(msg.Raw), &req)
 			return config.CheckPermission(config.PUSH_PERMISSION_MESSAGE_GROUP, permissionOpt.PushPermissions)
@@ -223,7 +226,7 @@ func (e *EventResoveBackend) parseEventPrimissCheck(data []byte, plugin *config.
 func (e *EventResoveBackend) doPost(obj sha256.EncryptObj, plugin *config.PluginConfig) {
 	var res *http.Response
 	body, _ := json.Marshal(obj)
-	client := http.Client{Timeout: time.Second * time.Duration(time.Second*2)}
+	client := http.Client{Timeout: time.Second * 2}
 	header := make(http.Header)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	header.Set("X-Lark-Request-Timestamp", timestamp)

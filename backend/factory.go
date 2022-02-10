@@ -2,12 +2,13 @@ package backend
 
 import (
 	"github.com/karlseguin/ccache/v2"
+	"go.uber.org/dig"
+
 	"github.com/scjtqs2/bot_adapter/adapter"
 	auth2 "github.com/scjtqs2/bot_adapter/auth"
 	"github.com/scjtqs2/bot_adapter/config"
 	"github.com/scjtqs2/bot_adapter/lru"
 	"github.com/scjtqs2/bot_adapter/pb/service"
-	"go.uber.org/dig"
 )
 
 // ServiceFactory 初始化配置
@@ -30,7 +31,7 @@ func ServiceFactory(ct *dig.Container) (service.AdapterServiceServer, *dig.Conta
 		return au
 	})
 	adapt, _ := adapter.NewAdapter(cfg)
-	_ = ct.Provide(func() adapter.AdapterInterface {
+	_ = ct.Provide(func() adapter.AdapterSvc {
 		return adapt
 	})
 	bkd := EventResoveBackend{

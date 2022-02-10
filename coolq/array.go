@@ -3,6 +3,7 @@ package coolq
 
 import "fmt"
 
+// MSG 消息体
 type MSG map[string]string
 
 // MsgElem 结构体，用来转json用
@@ -26,8 +27,8 @@ func NewXML(message string, resid int) MsgElem {
 	return MsgElem{Type: XML, Data: MSG{"data": message, "resid": fmt.Sprintf("%d", resid)}}
 }
 
-// NewJson JSON消息
-func NewJson(data string, redis int) MsgElem {
+// NewJSON JSON消息
+func NewJSON(data string, redis int) MsgElem {
 	return MsgElem{Type: JSON,
 		Data: MSG{
 			"data":  data,

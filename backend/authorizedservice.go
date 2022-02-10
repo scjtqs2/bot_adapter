@@ -2,12 +2,14 @@ package backend
 
 import (
 	"context"
+
+	log "github.com/sirupsen/logrus"
+	"go.uber.org/dig"
+
 	"github.com/scjtqs2/bot_adapter/auth"
 	"github.com/scjtqs2/bot_adapter/config"
 	"github.com/scjtqs2/bot_adapter/pb/entity"
 	"github.com/scjtqs2/bot_adapter/pb/service"
-	log "github.com/sirupsen/logrus"
-	"go.uber.org/dig"
 )
 
 // AuthorizedService grpc的jwt 验证
