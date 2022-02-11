@@ -12,6 +12,8 @@ http_config:
   secret: ""                                # go-cqhttp post地址对应的secret参数
   server_addr: http://go-cqhttp:5700        # go-cqhttp 的http监控地址，用于主动调api
   token: ""                                 # go-cqhttp 的token参数。
+  max_tries: 1                              # http重试次数
+  timeout: 5                                # http请求cqhttp的超时时间 秒
 # 扩展配置 （这里demo 配置了两个app样例，根据实际情况自行增加）
 plugins:
   # 这是一个数组，第一个扩展app配置

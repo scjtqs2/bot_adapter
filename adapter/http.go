@@ -493,11 +493,18 @@ func (h *HttpAdapter) CleanCache(req *entity.CleanCacheReq) (rsp *entity.CleanCa
 func (h *HttpAdapter) Send(action string, msg interface{}) ([]byte, error) {
 	var res *http.Response
 	body, _ := json.Marshal(msg)
-	client := http.Client{Timeout: time.Second * 2}
+	timeout := 6
+	if h.conf.HTTPConfig.Timeout != 0 {
+		timeout = h.conf.HTTPConfig.Timeout
+	}
+	client := http.Client{Timeout: time.Second * time.Duration(timeout)}
 	header := make(http.Header)
 	header.Set("Authorization", fmt.Sprintf("Bearer %s", h.conf.HTTPConfig.Token))
 	header.Set("Content-Type", "application/json")
-	maxRetries := 3
+	maxRetries := 1
+	if h.conf.HTTPConfig.MaxTries != 0 {
+		maxRetries = h.conf.HTTPConfig.MaxTries
+	}
 	for i := 0; i <= maxRetries; i++ {
 		req, err := http.NewRequest("POST", fmt.Sprintf("%s/%s", h.conf.HTTPConfig.ServerAddr, action), bytes.NewReader(body))
 		if err != nil {

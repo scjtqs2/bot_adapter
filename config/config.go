@@ -40,6 +40,8 @@ type HTTPConfig struct {
 	Token      string `json:"token" yaml:"token"`
 	LocalHost  string `json:"local_host" yaml:"local_host"` // 本地监听 addr
 	Secret     string `json:"secret" yaml:"secret"`
+	MaxTries   int    `json:"max_tries" yaml:"max_tries"` // 重试次数
+	Timeout int `json:"timeout" yaml:"timeout"` // http请求cqhttp的超时时间 秒
 }
 
 // PluginConfig 插件配置列表
