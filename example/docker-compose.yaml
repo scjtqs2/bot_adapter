@@ -2,7 +2,7 @@ version: '3'
 services:
   # cqhttp的一个bot
   go-cqhttp:
-    image: scjtqs/cqhttp:1.0.3
+    image: scjtqs/cqhttp:1.0.5
     restart: always
     privileged: true
     ports:
