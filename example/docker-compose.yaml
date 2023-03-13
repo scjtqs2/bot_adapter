@@ -23,7 +23,7 @@ services:
 
   # cqptth 的适配器
   bot-adapter:
-    image: scjtqs/bot_adapter:latest
+    image: scjtqs/bot_adapter:v1
     restart: always
     ports:
       - 5800:5800
