@@ -78,7 +78,7 @@ func ParseAtCode(message string) []string {
 
 // IsAtMe 判断是否at某人
 func IsAtMe(message string, qq int64) (bool, error) {
-	patten := `\[CQ:at,qq=(\d+)\]`
+	patten := `\[CQ:at,qq=(\d+)(,name=.+)?\]`
 	r, err := regexp.Compile(patten)
 	if err != nil {
 		return false, err
